@@ -6,32 +6,28 @@
     <a @click = logMeOut()>Wyloguj</a>
     </div>
      <div v-else>
-    <input type= "text" v-model = "email">
-    <button @click= "logMeIn()">Zaloguj</button>
-    </div>
-            
+    <login-form @login="logMeIn($event)"></login-form>
+    </div>            
   </div>
 </template>
 
 <script>
 
 import "milligram";
+import LoginForm from "./LoginForm";
 
-export default {
- 
+export default { 
+	components: {LoginForm},
 	data() {
-		  return {
-		    email: '',
+		  return {		    
 		    authenticatedUserName: ''
-		  };
-		  
+		  };		  
 		},
 	
 	methods: {
-		logMeIn() {
+		logMeIn(username) {
 			
-		   this.authenticatedUserName = this.email;
-		   
+		   this.authenticatedUserName = username;		   
 		  },
 		logMeOut() {
 			  this.authenticatedUserName = ' ';
@@ -44,7 +40,5 @@ export default {
 </script>
 
 <style>
-
-
 
 </style>
