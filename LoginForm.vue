@@ -17,6 +17,13 @@ export default {
      enter() {
          this.$emit('login', this.email);
      }
- }
+ },
+
+ mounted() {
+  if (!this.buttonLabel) {
+    this.buttonLabel = 'Zaloguj się';
+     }
+   }
 }
+</script>
 </script>
