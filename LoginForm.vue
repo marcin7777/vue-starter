@@ -19,11 +19,11 @@ export default {
      }
  },
 
- mounted() {
-  if (!this.buttonLabel) {
-    this.buttonLabel = 'Zaloguj się';
-     }
-   }
-}
-</script>
+
+computed:
+ {   buttonLabelToDisplay() {   
+  return this.buttonLabel || 'Zaloguj się';  
+     } 
+  }
+
 </script>
