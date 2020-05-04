@@ -1,13 +1,15 @@
 <template>
   <div>
-    <h1>Witaj w systemie do zapisów na zajęcia</h1>       
+    <h1>System do zapisów na zajęcia</h1>       
     <div v-if = "authenticatedUserName != ' '">    
-    <h3>Jesteś zalogowany jako:  {{ authenticatedUserName }}</h3>  
-    <a @click = logMeOut()>Wyloguj</a>
+    <h3>Witaj {{ authenticatedUserName }} !</h3> 
+    <a @click = logMeOut()>Wyloguj</a> 
+     <meetings-page>   </meetings-page> 
     </div>
      <div v-else>
-    <login-form @login="logMeIn($event)"</login-form>
-     </div>            
+    <login-form @login="logMeIn($event)" ></login-form>             
+    </div>  
+            
   </div>
 </template>
 
@@ -15,9 +17,12 @@
 
 import "milligram";
 import LoginForm from "./LoginForm";
+import MeetingsPage from "./MeetingsPage";
+
 
 export default { 
-	components: {LoginForm},
+
+	components: {LoginForm, MeetingsPage},
 	data() {
 		  return {		    
 		    authenticatedUserName: ''
@@ -26,8 +31,13 @@ export default {
 	
 	methods: {
 		logMeIn(username) {
-			
-		   this.authenticatedUserName = username;		   
+			if (username != "") {
+				this.authenticatedUserName = username;}
+			else {
+				alert("Wpisz swój e-mail!");
+			}
+		  
+		   
 		  },
 		logMeOut() {
 			  this.authenticatedUserName = ' ';
