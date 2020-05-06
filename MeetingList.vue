@@ -1,29 +1,60 @@
-     <template>
-    <table v-if="meetings.length > 0">
-        <thead>
-            <tr>
-                <th>Nazwa spotkania</th>
-
-                <th>Opis</th>
-
-            </tr>
-        </thead>
-        <tbody>
-            <tr v-for="meeting in meetings" :key="meeting.name">
-              <td>{{ meeting.name }}</td>
-            <td>{{ meeting.description }}</td>
-            </tr>
-        </tbody>
-    </table>
+<template>
+  <div>
+    <button @click="openMeetingEditor()" v-show="!editorVisible">Dodaj nowe spotkanie</button>
+    <new-meeting-form
+      v-if="editorVisible"
+      @added="addNewMeeting($event)">
+    </new-meeting-form>
+  
+    <p v-if="meetings.length < 1">Nie masz zaplanowanych spotkań</p>
+    
+    <div v-if="meetings.length > 0">
+      <h2>Zaplanowane zajęcia ({{meetings.length}})</h2>
+      <meeting-list
+        :meetings="meetings"
+        :user="user"
+        @subscribe="addParticipant($event)"
+        @unsubscribe="removeParticipant($event)"
+        @removed="removeMeeting($event)">
+      </meeting-list>
+    </div>
+  </div>
 </template>
 
 <script>
-export default {
-    props: ['meetings'],
-
-
-}
-</script>
-
-}
+  import NewMeetingForm from "./NewMeetingForm";
+  import MeetingList from "./MeetingList";
+  
+  export default {
+    components: {NewMeetingForm, MeetingList},
+    props: ['user'],
+    data() {
+      return {
+        meetings: [],
+        editorVisible: false,
+      };
+    },
+    methods: {
+      addNewMeeting(meeting) {
+        this.meetings.push(meeting);
+        this.editorVisible = false;
+      },
+      removeMeeting(meeting) {
+        this.meetings = this.meetings.filter((event) => {
+          return event !== meeting;
+        });
+      },
+      openMeetingEditor() {
+        this.editorVisible = true;
+      },
+      addParticipant(meeting) {
+        meeting.participants.push(this.user);
+      },
+      removeParticipant(meeting) {
+        meeting.participants = meeting.participants.filter((participant) => {
+          return participant !== this.user;
+        });
+      }
+    }
+  }
 </script>
